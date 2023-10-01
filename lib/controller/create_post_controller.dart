@@ -22,7 +22,12 @@ class CreatePostController extends GetxController {
     mediasFiles = RxList([]);
     super.onInit();
   }
-
+@override
+  void dispose() {
+    
+    contentc.dispose();
+    super.dispose(); 
+  }
   void _pickMedias() async {
     var picker = ImagePicker();
     final List<XFile> mediasFsiles = await picker.pickMultipleMedia();
@@ -48,8 +53,10 @@ class CreatePostController extends GetxController {
     isLoading = true;
     _pickMediasCamera();
   }
+  
   Future<bool> createPost() async {
     Item item;
+    isLoading = true;
     late VideoPlayerController? controller;
     if (mediasFiles.isNotEmpty) {
       
@@ -95,6 +102,7 @@ class CreatePostController extends GetxController {
         );
       } else {
         showMessage("Content is missing", "Please,type your content");
+         isLoading = false;
         return false;
       }
     } else {
@@ -116,6 +124,7 @@ class CreatePostController extends GetxController {
           response.data['message'] == "Post added successfully.") {
               //  Get.offNamed(ScreenRoutes.homeRoute);
         showMessage("Post Created", "Post added successfully.");
+         isLoading = false;
         return true;
       }
     } on dioo.DioException catch (e) {
@@ -133,6 +142,7 @@ class CreatePostController extends GetxController {
       showMessage("Post Created", "Please type content or add media");
       
     }
+    isLoading = false;
     return false;
   }
   set isLoading (bool isLoading) => _isLoading.value = isLoading;

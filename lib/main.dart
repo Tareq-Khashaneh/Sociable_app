@@ -1,13 +1,9 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mime/mime.dart';
 import 'package:task_1/bindings/create_poste_binding.dart';
 import 'package:task_1/bindings/home_binding.dart';
-import 'package:task_1/bindings/landing_binding.dart';
 import 'package:task_1/constants/routes.dart';
-import 'package:task_1/core/functions.dart';
-import 'package:task_1/view/screens/Landing_screen.dart';
 import 'package:task_1/view/screens/create_post_screen.dart';
 import 'package:task_1/view/screens/home._screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,8 +37,12 @@ class MyApp extends StatelessWidget {
       getPages: [
          GetPage(
             name: ScreenRoutes.landingPageRoute,
-            page: () => LandingScreen(),
-            bindings:[LandingBinding() , HomeBinding(),CreatePostBinding()] ),
+            page: () => HomeScreen(),
+            binding: HomeBinding() ),
+            GetPage(
+            name: ScreenRoutes.createPostRoute,
+            page: () => CreatePostScreen(),
+            bindings:[ HomeBinding(),CreatePostBinding()] ),
         
       ],
     );
