@@ -5,11 +5,10 @@ import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:task_1/constants/routes.dart';
 import 'package:task_1/controller/create_post_controller.dart';
+import 'package:task_1/controller/landong_controller.dart';
 import 'package:task_1/core/functions.dart';
 import 'package:task_1/model/media.dart';
 import 'package:task_1/shared/app_bar.dart';
-import 'package:task_1/shared/bottom_navigation_bar.dart';
-import 'package:task_1/shared/drawer.dart';
 import 'package:task_1/shared/loading_indicator.dart';
 import 'package:task_1/view/widgets/media_squre.dart';
 import 'package:video_player/video_player.dart';
@@ -23,14 +22,14 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final CreatePostController cpc = Get.find();
+  final LandingPageController lc = Get.find();
   final double height = 10;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: buildDrawer(context, ScreenRoutes.createPostRoute),
             appBar: BaseAppBar(
-          title: Text('Home'),
+          title: Text('Create Post'),
           appBar: AppBar(),
           widgets: []),
         body: Center(
@@ -70,21 +69,43 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         Positioned(
                           bottom: 0,
                           right: 0,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 1, vertical: 1),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10)),
-                                color: Colors.blue),
-                            child: IconButton(
-                                onPressed: cpc.pickMedias,
-                                icon: const Icon(
-                                  Icons.image,
-                                  color: Colors.white,
-                                  size: 25,
-                                )),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 1, vertical: 1),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        // bottomRight: Radius.circular(10)
+                                        ),
+                                    color: Colors.redAccent),
+                                child: IconButton(
+                                    onPressed: cpc.pickMediasCamera,
+                                    icon: const Icon(
+                                      Icons.camera_alt_rounded,
+                                      color: Colors.white,
+                                      size: 25,
+                                    )),
+                              ),
+                                    Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 1, vertical: 1),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        // topLeft: Radius.circular(5),
+                                        bottomRight: Radius.circular(10)),
+                                    color: Colors.blue),
+                                child: IconButton(
+                                    onPressed: cpc.pickMedias,
+                                    icon: const Icon(
+                                      Icons.image,
+                                      color: Colors.white,
+                                      size: 25,
+                                    )),
+                              ),
+                      
+                            ],
                           ),
                         )
                       ],
@@ -106,15 +127,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-             cpc.createPost();
+          onPressed: ()async {
+            final isCreated = await cpc.createPost();
+            
             FocusScopeNode currentFocus = FocusScope.of(context);
 
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();
-             
             }
-            
+            if(isCreated)
+            {
+              lc.changeTabIndex(0);
+            }
           },
           child: const Center(
             child: Icon(
@@ -123,9 +147,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
           ),
         ),
-         bottomNavigationBar: 
+        //  bottomNavigationBar: 
             
-            BottomNavBar()
+        //     BottomNavBar()
          
       ),
     );
@@ -141,7 +165,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               File file = File(media.path);
               return MediaSquare(
                 file: file,
-                media: media,
                 onDelete: () => cpc.mediasFiles.remove(media),
               );
             })

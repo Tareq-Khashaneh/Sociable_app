@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:task_1/bindings/create_poste_binding.dart';
 import 'package:task_1/bindings/home_binding.dart';
+import 'package:task_1/bindings/landing_binding.dart';
 import 'package:task_1/constants/routes.dart';
 import 'package:task_1/core/functions.dart';
+import 'package:task_1/view/screens/Landing_screen.dart';
 import 'package:task_1/view/screens/create_post_screen.dart';
 import 'package:task_1/view/screens/home._screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:task_1/view/ui/app_theme.dart';
 import 'firebase_options.dart';
 
 void main() async{
@@ -17,7 +20,6 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform,
 );
   await FirebaseAppCheck.instance.activate(
-    // webRecaptchaSiteKey: 'recaptcha-v3-site-key',
 
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.appAttest,
@@ -33,16 +35,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: ScreenRoutes.homeRoute,
+      initialRoute: ScreenRoutes.landingPageRoute,
+      theme: AppTheme.lightTheme,
+     
       getPages: [
-        GetPage(
-            name: ScreenRoutes.homeRoute,
-            page: () => HomeScreen(),
-            binding: HomeBinding()),
-        GetPage(
-            name: ScreenRoutes.createPostRoute,
-            page: () => CreatePostScreen(),
-            binding: CreatePostBinding()),
+         GetPage(
+            name: ScreenRoutes.landingPageRoute,
+            page: () => LandingScreen(),
+            bindings:[LandingBinding() , HomeBinding(),CreatePostBinding()] ),
+        
       ],
     );
   }

@@ -11,12 +11,14 @@ class ClickButton extends StatelessWidget {
   final String text;
    final int count;
   late RxInt counter = count.obs;
+  late bool isClicked = false;
   @override
   Widget build(BuildContext context) {
     return  Flexible(
       child: InkWell(
         onTap: (){
-          counter++;
+         !isClicked ? counter++ : counter--;
+         isClicked = true;
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),

@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 
 Widget addVerticalSize(double height) => SizedBox(height: height,);
 Widget addHorizantolSize(double width) => SizedBox(width: width,);
-void showMessage(String title , String message) {
-  Get.snackbar(
+SnackbarController showMessage(String title , String message) {
+ return Get.snackbar(
     title,
     message,
     snackPosition: SnackPosition.BOTTOM,

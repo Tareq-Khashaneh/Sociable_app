@@ -5,6 +5,8 @@ import 'package:task_1/core/functions.dart';
 import 'package:task_1/model/item.dart';
 import 'package:task_1/view/widgets/click_button.dart';
 import 'package:multi_image_layout/multi_image_viewer.dart';
+import 'package:task_1/view/widgets/media_squre.dart';
+import 'package:task_1/view/widgets/photo_grid.dart';
 
 class PostCard extends StatelessWidget {
   PostCard({super.key, required this.item});
@@ -18,14 +20,14 @@ class PostCard extends StatelessWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Colors.white,
           border: Border.all(color: Colors.white),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
-      spreadRadius: 1,
-      blurRadius: 10,
-      offset: Offset(0, 3),
+              spreadRadius: 1,
+              blurRadius: 10,
+              offset: Offset(0, 3),
             )
           ],
           borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -56,37 +58,50 @@ class PostCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
             child: item.content != null
-                ? Text(
-                    item.content!,
-                    overflow: TextOverflow.ellipsis,
-                  )
+                ? Flexible(
+                  child: Text(
+                      item.content!,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                )
                 : SizedBox(),
           ),
           // addVerticalSize(height),
+       if(item.mediasObj.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: Container(
-                width: Get.size.width,
-                child:
-                    buildMultiImages()),
+            child: 
+            // Container(
+              // child: PhotoGrid(
+              //   medias: item.mediasObj,
+              //   onImageClicked: (i) => print('Image $i was clicked!'),
+              //   onExpandClicked: () => print('Expand Image was clicked'),
+              //   maxImages: 4,
+              // ),
+            // ),
+            Container(
+            width: Get.size.width,
+            child:
+            buildMultiImages()
+            ),
           ),
           // Image.network(item.mediasObj[0].srcUrl),
-    if( item.interactionsCount != 0 )
-        Row(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: buildReactions(),
-              ),
-              Row(
-                children: [
-                  addHorizantolSize(width),
-                  Text(item.interactionsCount.toString()),
-                ],
-              )
-            ],
-          ),
+          if (item.interactionsCount != 0)
+            Row(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: buildReactions(),
+                ),
+                Row(
+                  children: [
+                    addHorizantolSize(width),
+                    Text(item.interactionsCount.toString()),
+                  ],
+                )
+              ],
+            ),
 
           const Divider(),
           Row(
@@ -97,7 +112,6 @@ class PostCard extends StatelessWidget {
                 text: 'Like',
                 count: item.interactionsCount!,
               ),
-              
               ClickButton(
                 icon: Icons.comment_rounded,
                 text: 'Comment',
@@ -186,9 +200,10 @@ class PostCard extends StatelessWidget {
   }
 
   Widget buildMultiImages() {
-    return MultiImageViewer(
+   return MultiImageViewer(
       images: item.mediasObj
-          .map((element) => ImageModel(
+          .map((element) => 
+          ImageModel(
                 imageUrl: element.srcUrl!,
                 caption: "Caption ${element.mediaTypeString}",
               ))

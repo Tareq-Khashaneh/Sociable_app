@@ -6,6 +6,7 @@ import 'package:dio/dio.dart' as dioo;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:task_1/constants/routes.dart';
 import 'package:task_1/core/functions.dart';
 import 'dart:convert';
 import 'package:task_1/model/item.dart';
@@ -33,12 +34,23 @@ class CreatePostController extends GetxController {
     isLoading = true;
     _pickMedias();
   }
-  void createPost() async {
+   void _pickMediasCamera() async {
+    var picker = ImagePicker();
+    XFile? xFile = await picker.pickImage(source: ImageSource.camera);
+    if(xFile != null)
+    {
+      mediasFiles.add(xFile);
+    }
+    isLoading = false;
+  }
+  void pickMediasCamera()
+  {
+    isLoading = true;
+    _pickMediasCamera();
+  }
+  Future<bool> createPost() async {
     Item item;
     late VideoPlayerController? controller;
-    print("medafiles $mediasFiles");
-    print("medas $medias");
-    print("content ${contentc.text}");
     if (mediasFiles.isNotEmpty) {
       
       for (var xFile in mediasFiles) {
@@ -83,7 +95,7 @@ class CreatePostController extends GetxController {
         );
       } else {
         showMessage("Content is missing", "Please,type your content");
-        return ;
+        return false;
       }
     } else {
       item = Item(
@@ -95,7 +107,6 @@ class CreatePostController extends GetxController {
 
     try {
       dioo.FormData formData = dioo.FormData.fromMap(item.toJson());
-      print("data ${formData.fields}");
       dioo.Response response = await dio.post(
         "${Api.apiUrl}/add",
         data: formData,
@@ -103,9 +114,9 @@ class CreatePostController extends GetxController {
       );
       if (response.statusCode == 201 &&
           response.data['message'] == "Post added successfully.") {
-               Get.back();
+              //  Get.offNamed(ScreenRoutes.homeRoute);
         showMessage("Post Created", "Post added successfully.");
-     
+        return true;
       }
     } on dioo.DioException catch (e) {
       // The request was made and the server responded with a status code
@@ -120,7 +131,9 @@ class CreatePostController extends GetxController {
         print(e.message);
       }
       showMessage("Post Created", "Please type content or add media");
+      
     }
+    return false;
   }
   set isLoading (bool isLoading) => _isLoading.value = isLoading;
   bool get isLoading => _isLoading.value;
