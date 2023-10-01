@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multi_image_layout/gallery_photo_view_wrapper.dart';
 import 'package:multi_image_layout/image_model.dart';
 import 'package:task_1/core/functions.dart';
 import 'package:task_1/model/item.dart';
+import 'package:task_1/model/media.dart';
+import 'package:task_1/shared/image_full_screen.dart';
+import 'package:task_1/shared/video_full_screen.dart';
 import 'package:task_1/view/widgets/click_button.dart';
 import 'package:multi_image_layout/multi_image_viewer.dart';
 import 'package:task_1/view/widgets/media_squre.dart';
@@ -17,7 +21,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(8),
-      alignment: Alignment.center,
+      // alignment: Alignment.center,
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -58,50 +62,57 @@ class PostCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
             child: item.content != null
-                ? Flexible(
-                  child: Text(
-                      item.content!,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                )
+                ? Text(
+                    item.content!,
+                    overflow: TextOverflow.ellipsis,
+                  )
                 : SizedBox(),
           ),
           // addVerticalSize(height),
-       if(item.mediasObj.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: 
-            // Container(
-              // child: PhotoGrid(
-              //   medias: item.mediasObj,
-              //   onImageClicked: (i) => print('Image $i was clicked!'),
-              //   onExpandClicked: () => print('Expand Image was clicked'),
-              //   maxImages: 4,
+          if (item.mediasObj.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: PhotoGrid(
+                medias: item.mediasObj,
+                onImageClicked: (index) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            item.mediasObj[index].mediaType == MediaType.image
+                                ? ImageFullScreen(
+                                    file: item.mediasObj[index].mediaFile!)
+                                : VideoFullScreen(
+                                    video: item.mediasObj[index].mediaFile!)),
+                  );
+                },
+                onExpandClicked: () => print('Expand Image was clicked'),
+                maxImages: 4,
+              ),
+
+              // Container(
+              // width: Get.size.width,
+              // child:
+              // buildMultiImages()
               // ),
-            // ),
-            Container(
-            width: Get.size.width,
-            child:
-            buildMultiImages()
             ),
-          ),
           // Image.network(item.mediasObj[0].srcUrl),
-          if (item.interactionsCount != 0)
-            Row(
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: buildReactions(),
-                ),
-                Row(
-                  children: [
-                    addHorizantolSize(width),
-                    Text(item.interactionsCount.toString()),
-                  ],
-                )
-              ],
-            ),
+          // if (item.interactionsCount != 0)
+          Row(
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: buildReactions(),
+              ),
+              Row(
+                children: [
+                  addHorizantolSize(width),
+                  Text(item.interactionsCount.toString()),
+                ],
+              )
+            ],
+          ),
 
           const Divider(),
           Row(
@@ -200,10 +211,10 @@ class PostCard extends StatelessWidget {
   }
 
   Widget buildMultiImages() {
-   return MultiImageViewer(
+    return MultiImageViewer(
+      backgroundColor: Colors.blue,
       images: item.mediasObj
-          .map((element) => 
-          ImageModel(
+          .map((element) => ImageModel(
                 imageUrl: element.srcUrl!,
                 caption: "Caption ${element.mediaTypeString}",
               ))

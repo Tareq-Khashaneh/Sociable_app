@@ -31,12 +31,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: ScreenRoutes.landingPageRoute,
+      initialRoute: ScreenRoutes.homeRoute,
       theme: AppTheme.lightTheme,
      
       getPages: [
          GetPage(
-            name: ScreenRoutes.landingPageRoute,
+            name: ScreenRoutes.homeRoute,
             page: () => HomeScreen(),
             binding: HomeBinding() ),
             GetPage(

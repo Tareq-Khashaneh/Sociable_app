@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: InkWell(
                             onTap: () {
-                              Get.offNamed(ScreenRoutes.createPostRoute);
+                              Get.toNamed(ScreenRoutes.createPostRoute);
                             hc.selectedIndex = 1.obs;
                             },
                             child: SizedBox(

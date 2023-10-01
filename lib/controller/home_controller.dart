@@ -9,30 +9,26 @@ import 'package:task_1/model/item.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:task_1/services/api.dart';
 import 'package:path/path.dart';
+import 'package:video_player/video_player.dart';
 import '../model/media.dart';
 
 class HomeController extends GetxController {
-  
-
-
   @override
   void dispose() {
     sc.dispose();
     super.dispose();
   }
 
-  void onInit() async{
-   
+  void onInit() async {
     selectedIndex = 0.obs;
     await fetchItems();
-    if(items.isNotEmpty && items.length >= limit )
-    {
+    if (items.isNotEmpty && items.length >= limit) {
       isLoadMoreRunning = true;
     }
     sc = ScrollController()
       ..addListener(() {
-        if (sc.position.pixels >= sc.position.maxScrollExtent - 200 ) {
-         fetchItems();
+        if (sc.position.pixels >= sc.position.maxScrollExtent - 200) {
+          fetchItems();
         }
       });
     super.onInit();
@@ -40,11 +36,14 @@ class HomeController extends GetxController {
 
   Future<void> fetchItems() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    print("here");
     dio.Dio dioo = dio.Dio();
     try {
       dio.Response response = await dioo.get("${Api.apiUrl}/all",
-          options: dio.Options(headers: Api.headers),
+          options: dio.Options(
+            headers: Api.headers,
+            //  sendTimeout: 5000,
+            // receiveTimeout: 3000,
+          ),
           queryParameters: {
             'limit': limit,
             'page': page,
@@ -77,16 +76,20 @@ class HomeController extends GetxController {
           }
           if (item.medias!.isNotEmpty) {
             for (var m in item.medias!) {
+
               final Reference refStorage =
                   FirebaseStorage.instance.refFromURL(m['src_url']);
+
 
               print("name ${refStorage.name}");
               final path = "${directory.path}/${refStorage.name}";
               File file = File(path);
               await refStorage.writeToFile(file);
-              postMedias.add(Media.fromJson(m)
-                ..setType()
-                ..mediaFile = file);
+              print("file file");
+                 postMedias.add(Media.fromJson(m)
+                  ..setType()
+                  ..mediaFile = file);
+              
             }
             item.mediasObj = postMedias;
           }
@@ -102,7 +105,7 @@ class HomeController extends GetxController {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(e.requestOptions);
-        print(e.message);
+        print("error message ${e.message}");
       }
     }
   }

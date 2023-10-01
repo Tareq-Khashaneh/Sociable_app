@@ -18,11 +18,11 @@ class ClickButton extends StatelessWidget {
       child: InkWell(
         onTap: (){
          !isClicked ? counter++ : counter--;
-         isClicked = true;
+         isClicked = !isClicked;
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-          alignment: Alignment.center,
+          // alignment: Alignment.center,
           margin: EdgeInsets.only(left: 6),
           decoration: BoxDecoration(
             color: Colors.grey[200],

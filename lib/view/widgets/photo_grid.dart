@@ -28,18 +28,17 @@ class _PhotoGridState extends State<PhotoGrid> {
   Widget build(BuildContext context) {
     var images = buildImages();
 
-    return Expanded(
-      child: SizedBox(
-        height: Get.size.height * 0.3,
-        child: GridView(
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
-            crossAxisSpacing: 2,
-            mainAxisSpacing: 2,
-          ),
-          children: images,
+    return SizedBox(
+      height: 205,
+      width: Get.size.width,
+      child: GridView(
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+          crossAxisSpacing: 2,
+          mainAxisSpacing: 2,
         ),
+        children: images,
       ),
     );
   }
@@ -60,11 +59,8 @@ class _PhotoGridState extends State<PhotoGrid> {
           return GestureDetector(
             child:
             MediaSquare(file: file,isPost: true,),
-            // Image.file(file,fit: BoxFit.cover,) ,
-            // Image.network(
-            //   imageUrl,
-            //   fit: BoxFit.cover,
-            // ),
+            
+            
             onTap: () => widget.onImageClicked(index),
           );
         } else {
@@ -95,14 +91,11 @@ class _PhotoGridState extends State<PhotoGrid> {
         return GestureDetector(
           child:
            MediaSquare(file: file,),
-            // Image.file(file,fit: BoxFit.cover,) , 
-          // Image.network(
-          //   imageUrl,
-          //   fit: BoxFit.cover,
-          // ),
+       
           onTap: () => widget.onImageClicked(index),
         );
       }
     });
   }
+  
 }
