@@ -9,7 +9,7 @@ import 'package:task_1/core/functions.dart';
 import 'package:task_1/model/media.dart';
 import 'package:task_1/shared/app_bar.dart';
 import 'package:task_1/shared/loading_indicator.dart';
-import 'package:task_1/view/widgets/media_squre.dart';
+import 'package:task_1/shared/media_squre.dart';
 import 'package:video_player/video_player.dart';
 
 class CreatePostScreen extends StatefulWidget {
