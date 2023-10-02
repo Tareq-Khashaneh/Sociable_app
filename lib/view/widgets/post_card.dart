@@ -9,7 +9,7 @@ import 'package:task_1/shared/image_full_screen.dart';
 import 'package:task_1/shared/video_full_screen.dart';
 import 'package:task_1/view/widgets/click_button.dart';
 import 'package:multi_image_layout/multi_image_viewer.dart';
-import 'package:task_1/view/widgets/media_squre.dart';
+import 'package:task_1/shared/media_squre.dart';
 import 'package:task_1/view/widgets/photo_grid.dart';
 
 class PostCard extends StatelessWidget {
@@ -20,7 +20,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8),
+    margin: EdgeInsets.all(8),  
       // alignment: Alignment.center,
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
@@ -62,10 +62,16 @@ class PostCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
             child: item.content != null
-                ? Text(
-                    item.content!,
-                    overflow: TextOverflow.ellipsis,
-                  )
+                ? Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        
+                          item.content!,
+                        ),
+                    ),
+                  ],
+                )
                 : SizedBox(),
           ),
           // addVerticalSize(height),
@@ -90,11 +96,7 @@ class PostCard extends StatelessWidget {
                 maxImages: 4,
               ),
 
-              // Container(
-              // width: Get.size.width,
-              // child:
-              // buildMultiImages()
-              // ),
+              
             ),
           // Image.network(item.mediasObj[0].srcUrl),
           // if (item.interactionsCount != 0)
@@ -210,17 +212,5 @@ class PostCard extends StatelessWidget {
     }
   }
 
-  Widget buildMultiImages() {
-    return MultiImageViewer(
-      backgroundColor: Colors.blue,
-      images: item.mediasObj
-          .map((element) => ImageModel(
-                imageUrl: element.srcUrl!,
-                caption: "Caption ${element.mediaTypeString}",
-              ))
-          .toList(),
-      height: 150,
-      width: 150,
-    );
-  }
+
 }

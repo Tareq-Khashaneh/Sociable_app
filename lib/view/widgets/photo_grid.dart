@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_1/model/media.dart';
-import 'package:task_1/view/widgets/media_squre.dart';
+import 'package:task_1/shared/media_squre.dart';
 
 class PhotoGrid extends StatefulWidget {
       final int maxImages;
@@ -24,19 +24,37 @@ class PhotoGrid extends StatefulWidget {
 }
 
 class _PhotoGridState extends State<PhotoGrid> {
+  late  double height;
+  late  double width;
+  @override
+  void initState() {
+    height = Get.size.height;
+    width = Get.size.width;
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var images = buildImages();
-
+    int numImages = widget.medias.length;
+    if(numImages == 1 || numImages == 2)
+    {
+       height = height * 0.85;
+    }else if(numImages == 3 || numImages == 4)
+    {
+      height = 215;
+    }
     return SizedBox(
-      height: 205,
-      width: Get.size.width,
+      // height:  height ,
+      // width:numImages == 1 ?  width  : width,
       child: GridView(
+        shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
+          maxCrossAxisExtent: numImages == 1 ?  400 : 200,
           crossAxisSpacing: 2,
           mainAxisSpacing: 2,
+          childAspectRatio: 16/9
         ),
         children: images,
       ),
@@ -47,7 +65,7 @@ class _PhotoGridState extends State<PhotoGrid> {
     int numImages = widget.medias.length;
     return List<Widget>.generate(min(numImages, widget.maxImages), (index) {
       // String imageUrl = widget.medias[index];
-      File file = widget.medias[index].mediaFile!;
+      File? file = widget.medias[index].mediaFile;
 
       // If its the last image
       if (index == widget.maxImages - 1) {
@@ -56,22 +74,23 @@ class _PhotoGridState extends State<PhotoGrid> {
 
         // If no more are remaining return a simple image widget
         if (remaining == 0) {
-          return GestureDetector(
+          return   file !=null ?  GestureDetector(
             child:
-            MediaSquare(file: file,isPost: true,),
+         MediaSquare(file: file,isPost: true,),
             
             
             onTap: () => widget.onImageClicked(index),
-          );
+          ) : SizedBox();
         } else {
           // Create the facebook like effect for the last image with number of remaining  images
-          return GestureDetector(
+          return file !=null ? GestureDetector(
             onTap: () => widget.onExpandClicked(),
             child: Stack(
               fit: StackFit.expand,
               children: [
                 // Image.network(imageUrl, fit: BoxFit.cover),
-                   MediaSquare(file: file,),
+                   
+           MediaSquare(file: file,isPost: true),
                   // Image.file(file,fit: BoxFit.cover,) ,
                 Positioned.fill(
                   child: Container(
@@ -85,15 +104,17 @@ class _PhotoGridState extends State<PhotoGrid> {
                 ),
               ],
             ),
-          );
+          ):SizedBox();
         }
       } else {
-        return GestureDetector(
+        return file !=null ? GestureDetector(
           child:
-           MediaSquare(file: file,),
+          // SizedBox(),
+          
+           MediaSquare(file: file,isPost: true),
        
           onTap: () => widget.onImageClicked(index),
-        );
+        ):SizedBox();
       }
     });
   }

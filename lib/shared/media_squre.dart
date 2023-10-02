@@ -26,11 +26,12 @@ class MediaSquare extends StatelessWidget {
     if (mediaType == 'Video') {
       controller = VideoPlayerController.file(file)..initialize();
     }
-    return Stack(
+    return  Stack(
       children: [
         mediaType == "Image"
             ? Container(
-                decoration: BoxDecoration(
+                decoration: BoxDecoration
+                (borderRadius: BorderRadius.circular(5),
                   color: Colors.black87,
                   image: DecorationImage(
                       image: Image.file(
@@ -39,8 +40,10 @@ class MediaSquare extends StatelessWidget {
                       ).image,
                       fit: BoxFit.cover),
                 ))
-            : ClipRRect(child: VideoPlayer(controller)),
-        if (isPost)
+            : ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: VideoPlayer(controller)),
+       if(!isPost)
           Positioned(
             right: -1,
             top: -9,
@@ -57,5 +60,6 @@ class MediaSquare extends StatelessWidget {
           ),
       ],
     );
+  
   }
 }

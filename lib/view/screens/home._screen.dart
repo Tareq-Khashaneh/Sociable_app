@@ -18,7 +18,9 @@ class HomeScreen extends StatelessWidget {
            appBar: BaseAppBar(
           title: Text('Home'),
           appBar: AppBar(),
-          widgets: []),
+          widgets: [
+            IconButton(onPressed: hc.refresh, icon: const Icon(Icons.refresh))
+          ]),
            body: Column(
               children: [
                 Padding(

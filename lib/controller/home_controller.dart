@@ -22,18 +22,33 @@ class HomeController extends GetxController {
   void onInit() async {
     selectedIndex = 0.obs;
     await fetchItems();
+    // if (items.isNotEmpty && items.length >= limit) {
+    //   isLoadMoreRunning = true;
+    // }
+   
+    //   ..addListener(() {
+    //     if (sc.position.pixels >= sc.position.maxScrollExtent - 200) {
+    //       fetchItems();
+    //     }
+    //   });
     if (items.isNotEmpty && items.length >= limit) {
       isLoadMoreRunning = true;
     }
-    sc = ScrollController()
-      ..addListener(() {
-        if (sc.position.pixels >= sc.position.maxScrollExtent - 200) {
-          fetchItems();
-        }
-      });
+     sc = ScrollController()..addListener(() { if (sc.offset >=
+        sc.position.maxScrollExtent * 0.5 &&
+        !sc.position.outOfRange 
+        ) {
+      fetchItems();
+    } });
+     
     super.onInit();
   }
-
+  void refresh()
+  {
+    page = 1;
+    items = [];
+    fetchItems();
+  }
   Future<void> fetchItems() async {
     Directory directory = await getApplicationDocumentsDirectory();
     dio.Dio dioo = dio.Dio();
@@ -53,7 +68,7 @@ class HomeController extends GetxController {
       if (response.statusCode == 200 &&
           response.data['message'] == "Here are all posts!") {
         List<dynamic> itemsJson = response.data['data']['items'];
-        // print("ItemsJson $itemsJson");
+
         if (itemsJson.length < limit) {
           isLoadMoreRunning = false;
         }
@@ -76,20 +91,29 @@ class HomeController extends GetxController {
           }
           if (item.medias!.isNotEmpty) {
             for (var m in item.medias!) {
-
               final Reference refStorage =
                   FirebaseStorage.instance.refFromURL(m['src_url']);
-
-
-              print("name ${refStorage.name}");
-              final path = "${directory.path}/${refStorage.name}";
-              File file = File(path);
-              await refStorage.writeToFile(file);
-              print("file file");
-                 postMedias.add(Media.fromJson(m)
+              try {
+                dio.Response res = await dioo.get(m['src_url']);
+                print("name ${refStorage.name}");
+                final path = "${directory.path}/${refStorage.name}";
+                File file = File(path);
+                await refStorage.writeToFile(file);
+                print("file file");
+                postMedias.add(Media.fromJson(m)
                   ..setType()
                   ..mediaFile = file);
-              
+              } on dio.DioException catch (e) {
+                if (e.response != null) {
+                  print("data ${e.response!.data}");
+                  print("headers ${e.response!.headers}");
+                  print("requestOptions ${e.response!.requestOptions}");
+                } else {
+                  // Something happened in setting up or sending the request that triggered an Error
+                  print("requestOptions ${e.requestOptions}");
+                  print("error message ${e.message}");
+                }
+              }
             }
             item.mediasObj = postMedias;
           }
@@ -99,18 +123,18 @@ class HomeController extends GetxController {
       }
     } on dio.DioException catch (e) {
       if (e.response != null) {
-        print(e.response!.data);
-        print(e.response!.headers);
-        print(e.response!.requestOptions);
+        print("data ${e.response!.data}");
+        print("headers ${e.response!.headers}");
+        print("requestOptions ${e.response!.requestOptions}");
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
+        print("requestOptions ${e.requestOptions}");
         print("error message ${e.message}");
       }
     }
   }
 
-  final int limit = 12;
+  final int limit = 10;
   late int page = 1;
   late RxBool _hasNextPage = true.obs;
   late RxBool _isLoadMoreRunning;
