@@ -11,7 +11,7 @@ class MediaSquare extends StatelessWidget {
   const MediaSquare(
       {super.key, required this.file, this.isPost = false, this.onDelete});
   final File file;
-  final VoidCallback? onDelete;
+  final Function? onDelete;
   // ignore: prefer_typing_uninitialized_variables
   final isPost;
   @override
@@ -49,7 +49,7 @@ class MediaSquare extends StatelessWidget {
             top: -9,
             child: IconButton(
               onPressed: () {
-                buildDialogue(() => onDelete!());
+               buildDialogue(onDelete!);
               },
               icon: Icon(
                 Icons.close,
