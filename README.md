@@ -1,16 +1,14 @@
-# task_1
+# Post app
 
-A new Flutter project.
+show users posts with multimedia images and videos 
 
 ## Getting Started
+show users posts with multimedia images,videos in addition you can create your own post.
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+![photo_2023-10-26_23-31-00](https://github.com/Tareq97-Sy/posts_app/assets/66509973/bfa30867-0d21-4035-8dae-b527b09b7540)
+![photo_2023-10-26_23-30-56](https://github.com/Tareq97-Sy/posts_app/assets/66509973/ee9f0e19-2736-4ba5-b160-065ce96e4a5a)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![photo_2023-10-26_23-30-46](https://github.com/Tareq97-Sy/posts_app/assets/66509973/24a7c83e-624c-4d50-a93b-2564e5fd7787)
+![photo_2023-10-26_00-55-22](https://github.com/Tareq97-Sy/posts_app/assets/66509973/cbf74be3-d9b0-4459-9b53-2b59dfac642b)
