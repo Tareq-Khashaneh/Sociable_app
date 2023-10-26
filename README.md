@@ -1,12 +1,18 @@
-# Post app
+# Sociable app
 
-show users posts with multimedia images and videos 
+Sociable app is simple like facebook show users posts with multimedia images and videos 
 
 ## Getting Started
-show users posts with multimedia images,videos in addition you can create your own post.
+show users posts with multimedia images,videos built it with Getx statemanagment and firebase storage.
+
+## features
+
+- view users posts
+- supports multimedia
+- create new post
+- add image or video for post
 
 ## Screenshots
-
 ![photo_2023-10-26_23-30-56](https://github.com/Tareq97-Sy/posts_app/assets/66509973/ee9f0e19-2736-4ba5-b160-065ce96e4a5a)
 
 ![photo_2023-10-26_23-30-46](https://github.com/Tareq97-Sy/posts_app/assets/66509973/24a7c83e-624c-4d50-a93b-2564e5fd7787)
